@@ -409,13 +409,13 @@ def get_target_region(config, options):
 
     _fatal_error(metadata_exception)
 
-def get_target_domain_suffix(config):
+def get_target_domain_suffix(config, options):
     def _fatal_error():
         fatal_error(
             'Error retrieving region. Please set the "dns_name_suffix" parameter '
             "in the efs-utils configuration file."
         )
-    region = get_target_region(config)
+    region = get_target_region(config, options)
     config_section = get_config_section(config, region)
 
     try:
@@ -1772,10 +1772,7 @@ def bootstrap_proxy(
         security_credentials = None
         client_info = get_client_info(config)
         region = get_target_region(config, options)
-<<<<<<< HEAD
-        dns_name_suffix = get_target_domain_suffix(config)
-=======
->>>>>>> upstream/master
+        dns_name_suffix = get_target_domain_suffix(config, options)
 
         if tls_enabled(options):
             cert_details = {}
@@ -2690,14 +2687,9 @@ def get_dns_name_and_fallback_mount_target_ip_address(config, fs_id, options):
     if options and "crossaccount" in options:
         try:
             az_id = get_az_id_from_instance_metadata(config, options)
-<<<<<<< HEAD
-            region = get_target_region(config)
-            dns_name_suffix = get_target_domain_suffix(config)
+            region = get_target_region(confi, options)
+            dns_name_suffix = get_target_domain_suffix(config, options)
             dns_name = "%s.%s.efs.%s.%s" % (az_id, fs_id, region, dns_name_suffix)
-=======
-            region = get_target_region(config, options)
-            dns_name = "%s.%s.efs.%s.amazonaws.com" % (az_id, fs_id, region)
->>>>>>> upstream/master
         except RuntimeError:
             err_msg = "Cannot retrieve AZ-ID from metadata service. This is required for the crossaccount mount option."
             fatal_error(err_msg)
